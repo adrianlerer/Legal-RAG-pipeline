@@ -1,0 +1,207 @@
+{
+  "sblia_system": {
+    "version": "1.0.0",
+    "description": "Super-Bot Legal Intelligence Architecture configuration",
+    "author": "AI Developer"
+  },
+  
+  "raeia_scraper": {
+    "base_url": "https://raeia.org/books/",
+    "max_concurrent_downloads": 3,
+    "download_timeout_seconds": 120,
+    "retry_attempts": 3,
+    "rate_limit_delay_seconds": 2,
+    "allowed_file_extensions": [".pdf", ".docx", ".epub", ".txt"],
+    "max_file_size_mb": 100,
+    "user_agent": "Mozilla/5.0 (compatible; RAEIAScraper/1.0; Legal Research Bot)"
+  },
+  
+  "legal_intelligence": {
+    "min_confidence_threshold": 0.3,
+    "max_snippet_length": 1000,
+    "max_keywords_per_snippet": 10,
+    "supported_file_types": [".pdf", ".docx", ".txt", ".md"],
+    "extraction_methods": ["keyword_based", "pattern_matching", "citation_analysis"],
+    
+    "legal_categories": {
+      "ethical_guidelines": {
+        "priority": "high",
+        "min_confidence": 0.4,
+        "max_snippets_per_document": 20
+      },
+      "prompts": {
+        "priority": "high", 
+        "min_confidence": 0.3,
+        "max_snippets_per_document": 50
+      },
+      "evaluation_rubrics": {
+        "priority": "medium",
+        "min_confidence": 0.5,
+        "max_snippets_per_document": 15
+      },
+      "case_studies": {
+        "priority": "medium",
+        "min_confidence": 0.4,
+        "max_snippets_per_document": 25
+      }
+    }
+  },
+  
+  "rag_pipeline": {
+    "embedding_model": "sentence-transformers/all-mpnet-base-v2",
+    "chunk_size": 500,
+    "chunk_overlap": 0,
+    "batch_size": 32,
+    "similarity_threshold": 0.7,
+    
+    "chunking_separators": [
+      "\\n\\n", "\\n", "!", "?", ".", ":", ";", ",", " ", ""
+    ],
+    
+    "supported_similarity_methods": ["cosine", "BM25"],
+    "default_top_k_retrieval": 10,
+    
+    "legal_enhancement": {
+      "enable_legal_query_enhancement": true,
+      "legal_context_max_items": 5,
+      "suggested_prompts_max_items": 3,
+      "confidence_boost_factor": 0.2
+    }
+  },
+  
+  "nightly_evolution": {
+    "enabled": true,
+    "schedule_time": "02:00",
+    "max_new_downloads_per_night": 5,
+    "min_legal_relevance_threshold": 0.4,
+    "processing_timeout_minutes": 120,
+    "error_retry_attempts": 2,
+    
+    "evolution_metrics": {
+      "track_performance": true,
+      "save_detailed_logs": true,
+      "retention_days": 90
+    },
+    
+    "safety_limits": {
+      "max_total_cache_size_gb": 10,
+      "max_books_in_cache": 1000,
+      "emergency_cleanup_threshold": 0.9
+    }
+  },
+  
+  "caching": {
+    "base_cache_dir": "./cache",
+    "raeia_books_subdir": "raeia/books",
+    "raeia_metadata_subdir": "raeia/metadata", 
+    "legal_snippets_subdir": "raeia/legal_snippets",
+    "evolution_logs_subdir": "evolution_logs",
+    
+    "cleanup_policy": {
+      "enable_automatic_cleanup": true,
+      "cleanup_older_than_days": 180,
+      "keep_minimum_books": 10,
+      "cleanup_schedule": "weekly"
+    },
+    
+    "compression": {
+      "compress_old_files": true,
+      "compression_age_days": 30,
+      "compression_algorithm": "gzip"
+    }
+  },
+  
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file_rotation": {
+      "enabled": true,
+      "max_file_size_mb": 50,
+      "backup_count": 5
+    },
+    
+    "loggers": {
+      "RAEIAScraper": "INFO",
+      "LegalIntelligenceExtractor": "INFO", 
+      "SBLIAPipelineIntegrator": "INFO",
+      "NightlyEvolution": "INFO",
+      "SBLIAController": "INFO"
+    }
+  },
+  
+  "performance": {
+    "max_memory_usage_mb": 2048,
+    "enable_progress_bars": true,
+    "parallel_processing": {
+      "enabled": true,
+      "max_workers": 4,
+      "chunk_processing_batch_size": 100
+    },
+    
+    "optimization": {
+      "cache_embeddings": true,
+      "reuse_text_extractions": true,
+      "lazy_load_large_files": true
+    }
+  },
+  
+  "security": {
+    "validate_file_types": true,
+    "max_download_size_mb": 100,
+    "allowed_domains": ["raeia.org", "drive.google.com"],
+    "scan_for_malicious_content": false,
+    
+    "privacy": {
+      "anonymize_logs": false,
+      "respect_robots_txt": true,
+      "honor_rate_limits": true
+    }
+  },
+  
+  "integration": {
+    "existing_rag_pipeline": {
+      "compatible_formats": ["json", "jsonl"],
+      "chunk_id_format": "integer",
+      "required_fields": ["chunk_id", "text", "embedding", "span", "filepath"],
+      "optional_fields": ["legal_category", "confidence_score", "legal_keywords"]
+    },
+    
+    "output_formats": {
+      "standard_rag": {
+        "filename_pattern": "raeia_corpus_{timestamp}.json",
+        "include_metadata": false
+      },
+      "enhanced_rag": {
+        "filename_pattern": "enhanced_raeia_{timestamp}.json",
+        "include_metadata": true,
+        "include_legal_intelligence": true
+      }
+    }
+  },
+  
+  "monitoring": {
+    "health_checks": {
+      "enabled": true,
+      "check_interval_minutes": 60,
+      "alert_thresholds": {
+        "error_rate_percent": 10,
+        "processing_time_minutes": 30,
+        "cache_usage_percent": 85
+      }
+    },
+    
+    "metrics_collection": {
+      "enabled": true,
+      "metrics_retention_days": 90,
+      "detailed_performance_tracking": true
+    }
+  },
+  
+  "experimental_features": {
+    "ai_powered_relevance_scoring": false,
+    "automatic_legal_taxonomy": false,
+    "cross_reference_detection": false,
+    "multilingual_support": false,
+    "semantic_deduplication": false
+  }
+}
